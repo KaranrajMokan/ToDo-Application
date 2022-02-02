@@ -11,6 +11,7 @@ import {
   Button,
   Modal,
 } from "antd";
+import { CloseOutlined } from "@ant-design/icons";
 
 const { Header, Content } = Layout;
 class Todo extends React.Component {
@@ -23,6 +24,7 @@ class Todo extends React.Component {
     this.handleButton = this.handleButton.bind(this);
     this.onFinish = this.onFinish.bind(this);
     this.disabledDate = this.disabledDate.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
 
   handleButton() {
@@ -44,6 +46,14 @@ class Todo extends React.Component {
 
   disabledDate(current) {
     return current < moment().startOf("day");
+  }
+
+  handleClose(name) {
+    this.setState({
+      todoData: this.state.todoData.filter(function (item) {
+        return item.name !== name;
+      }),
+    });
   }
 
   render() {
@@ -144,7 +154,19 @@ class Todo extends React.Component {
             <Row gutter={(24, 24)}>
               {this.state.todoData.map((item) => (
                 <Col span={8} xs={24} md={8}>
-                  <Card style={{ marginTop: 16 }} title={item.name}>
+                  <Card
+                    style={{ marginTop: 16 }}
+                    title={item.name}
+                    extra={
+                      <p
+                        style={{ cursor: "pointer", color: "red" }}
+                        onClick={() => this.handleClose(item.name)}
+                      >
+                        Close &nbsp;
+                        <CloseOutlined />
+                      </p>
+                    }
+                  >
                     <p>Description : {item.description} </p>
                     <p>Date : {item.date}</p>
                   </Card>
